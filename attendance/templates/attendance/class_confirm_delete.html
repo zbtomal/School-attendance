@@ -21,7 +21,7 @@
         This will permanently delete all <b>{{ count }}</b> student{{ count|pluralize }} in Class {{ class_name }}
         along with their attendance history. This cannot be undone.
     </p>
-    <form method="post" class="flex gap-3">
+    <form method="post" class="flex flex-col-reverse sm:flex-row gap-3">
         {% csrf_token %}
         <a href="{% url 'student_list' %}"
             class="flex-1 bg-gray-100 text-ink font-bold py-2.5 rounded-lg text-center">Cancel</a>

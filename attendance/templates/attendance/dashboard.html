@@ -31,7 +31,7 @@
     Today · {{ today|date:"l, d F Y" }}
 </div>
 
-<div class="grid grid-cols-3 gap-3 mb-6">
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
     <div class="bg-white border border-gray-200 rounded-2xl px-4 py-4 text-center shadow-sm">
         <div class="text-[11px] uppercase tracking-widest text-ink-soft">Total</div>
         <div class="text-2xl font-bold text-forest-deep mt-1">{{ total_students }}</div>
@@ -84,7 +84,7 @@
 {% if request.user.is_staff %}
 <div class="font-display text-[11px] tracking-widest uppercase text-ink-soft mt-6 mb-3">Today · All Classes</div>
 
-<div class="grid grid-cols-3 gap-3 mb-6">
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
     <div class="bg-white border border-gray-200 rounded-2xl px-4 py-4 text-center shadow-sm">
         <div class="text-[11px] uppercase tracking-widest text-ink-soft">Students</div>
         <div class="text-2xl font-bold text-forest-deep mt-1">{{ admin_total }}</div>

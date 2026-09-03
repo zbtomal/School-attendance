@@ -61,7 +61,8 @@
     <input type="hidden" name="section" value="full">
 
     <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm mb-4">
-        <div class="grid grid-cols-12 gap-2 px-4 py-2.5 bg-forest text-white text-xs font-bold uppercase tracking-wide">
+        <div
+            class="hidden sm:grid grid-cols-12 gap-2 px-4 py-2.5 bg-forest text-white text-xs font-bold uppercase tracking-wide">
             <div class="col-span-1">ID</div>
             <div class="col-span-4">Name</div>
             <div class="col-span-3">Number</div>
@@ -69,14 +70,14 @@
         </div>
 
         {% for item in full_time_rows %}
-        <div class="grid grid-cols-12 gap-2 px-4 py-3 items-center border-t border-gray-100 text-sm">
-            <div class="col-span-1 font-mono text-ink-soft">{{ item.teacher.id }}</div>
-            <div class="col-span-4 font-semibold text-forest-deep truncate">{{ item.teacher.name }}</div>
-            <div class="col-span-3 text-ink-soft">
+        <div class="grid grid-cols-1 sm:grid-cols-12 gap-2 px-4 py-3 items-center border-t border-gray-100 text-sm">
+            <div class="sm:col-span-1 font-mono text-ink-soft">ID: {{ forloop.counter }}</div>
+            <div class="sm:col-span-4 font-semibold text-forest-deep break-words">{{ item.teacher.name }}</div>
+            <div class="sm:col-span-3 text-ink-soft break-words">
                 {% if item.teacher.mobile %}{{ item.teacher.mobile }}{% else %}<span class="text-absent">No
                     phone</span>{% endif %}
             </div>
-            <div class="col-span-4 flex gap-1.5 justify-center">
+            <div class="sm:col-span-4 flex gap-1.5 justify-start sm:justify-center flex-wrap">
                 {% if full_already_marked %}
                 {% if item.is_present %}
                 <span class="px-3 py-1.5 rounded-lg text-[11px] font-bold bg-present text-white">Present</span>
@@ -141,7 +142,8 @@
     <input type="hidden" name="section" value="part">
 
     <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm mb-4">
-        <div class="grid grid-cols-12 gap-2 px-4 py-2.5 bg-gold text-white text-xs font-bold uppercase tracking-wide">
+        <div
+            class="hidden sm:grid grid-cols-12 gap-2 px-4 py-2.5 bg-forest text-white text-xs font-bold uppercase tracking-wide">
             <div class="col-span-1">ID</div>
             <div class="col-span-4">Name</div>
             <div class="col-span-3">Number</div>
@@ -149,14 +151,14 @@
         </div>
 
         {% for item in part_time_rows %}
-        <div class="grid grid-cols-12 gap-2 px-4 py-3 items-center border-t border-gray-100 text-sm">
-            <div class="col-span-1 font-mono text-ink-soft">{{ item.teacher.id }}</div>
-            <div class="col-span-4 font-semibold text-forest-deep truncate">{{ item.teacher.name }}</div>
-            <div class="col-span-3 text-ink-soft">
+        <div class="grid grid-cols-1 sm:grid-cols-12 gap-2 px-4 py-3 items-center border-t border-gray-100 text-sm">
+            <div class="sm:col-span-1 font-mono text-ink-soft">ID: {{ full_time_rows|length|add:forloop.counter }}</div>
+            <div class="sm:col-span-4 font-semibold text-forest-deep break-words">{{ item.teacher.name }}</div>
+            <div class="sm:col-span-3 text-ink-soft break-words">
                 {% if item.teacher.mobile %}{{ item.teacher.mobile }}{% else %}<span class="text-absent">No
                     phone</span>{% endif %}
             </div>
-            <div class="col-span-4 flex gap-1.5 justify-center">
+            <div class="sm:col-span-4 flex gap-1.5 justify-start sm:justify-center flex-wrap">
                 {% if part_already_marked %}
                 {% if item.is_present %}
                 <span class="px-3 py-1.5 rounded-lg text-[11px] font-bold bg-present text-white">Present</span>
@@ -182,7 +184,7 @@
 
     {% if not part_already_marked %}
     <button type="submit"
-        class="w-full bg-gold text-white font-bold py-3 rounded-xl shadow-lg hover:opacity-90 transition">
+        class="w-full bg-forest text-white font-bold py-3 rounded-xl shadow-lg hover:bg-forest-deep transition">
         Save Part-time Attendance &amp; Send SMS
     </button>
     {% endif %}

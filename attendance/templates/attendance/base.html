@@ -41,8 +41,30 @@
     </script>
 
     <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Noto Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        button,
+        a,
+        input,
+        select {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        button:focus-visible,
+        a:focus-visible,
+        input:focus-visible,
+        select:focus-visible {
+            outline: 3px solid rgba(232, 197, 106, 0.75);
+            outline-offset: 2px;
         }
 
         /* Navigation buttons */
@@ -99,6 +121,51 @@
         }
 
         @media (max-width: 450px) {
+            body {
+                font-size: 14px;
+            }
+
+            main {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+
+            main form:not(.inline),
+            main>div {
+                max-width: 100%;
+            }
+
+            header .max-w-7xl>div {
+                align-items: flex-start;
+                flex-wrap: wrap;
+            }
+
+            header .max-w-7xl>div>div:first-child {
+                max-width: 48%;
+            }
+
+            header nav {
+                margin-left: auto;
+                flex-wrap: wrap;
+                justify-content: flex-end;
+            }
+
+            header h1 {
+                white-space: normal;
+                line-height: 1.2;
+            }
+
+            header .flex-1 {
+                order: 3;
+                flex-basis: 100%;
+                padding-bottom: 4px;
+            }
+
+            header .flex-1>div {
+                white-space: normal;
+                line-height: 1.25;
+            }
+
             .nav-btn {
                 padding: 6px 8px;
                 font-size: 10px;

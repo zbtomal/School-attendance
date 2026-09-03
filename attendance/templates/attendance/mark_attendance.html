@@ -112,20 +112,21 @@
 
   <div class="space-y-2 mb-6">
     {% for item in student_rows %}
-    <div class="bg-white border border-gray-200 rounded-xl p-3 flex items-center gap-3 shadow-sm">
+    <div
+      class="bg-white border border-gray-200 rounded-xl p-3 flex flex-wrap sm:flex-nowrap items-center gap-3 shadow-sm">
       <div
         class="w-9 h-9 rounded-full border-2 border-gold flex items-center justify-center text-xs font-bold text-gold flex-shrink-0 bg-gold/5">
         {{ item.student.roll_no }}
       </div>
-      <div class="flex-1 min-w-0">
-        <div class="font-semibold text-forest-deep truncate text-sm">{{ item.student.name }}</div>
+      <div class="flex-1 min-w-[calc(100%-3rem)] sm:min-w-0">
+        <div class="font-semibold text-forest-deep break-words text-sm">{{ item.student.name }}</div>
         {% if item.student.parent_mobile %}
         <div class="text-[11px] text-ink-soft">{{ item.student.parent_mobile }}</div>
         {% else %}
         <div class="text-[11px] text-absent">No phone</div>
         {% endif %}
       </div>
-      <div class="flex gap-1.5 flex-shrink-0">
+      <div class="w-full sm:w-auto flex gap-1.5 sm:flex-shrink-0 justify-end">
         {% if already_marked %}
         {% if item.is_present %}
         <span class="px-3 py-1.5 rounded-lg text-[11px] font-bold bg-present text-white">Present</span>

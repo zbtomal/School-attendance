@@ -33,16 +33,17 @@
 
 {% if records %}
 <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
-    <div class="grid grid-cols-12 gap-2 px-4 py-2.5 bg-forest text-white text-xs font-bold uppercase tracking-wide">
+    <div
+        class="hidden sm:grid grid-cols-12 gap-2 px-4 py-2.5 bg-forest text-white text-xs font-bold uppercase tracking-wide">
         <div class="col-span-1">ID</div>
         <div class="col-span-4">Name</div>
         <div class="col-span-3">Number</div>
         <div class="col-span-4 text-center">Attendance</div>
     </div>
     {% for r in records %}
-    <div class="grid grid-cols-12 gap-2 px-4 py-3 items-center border-t border-gray-100 text-sm">
-        <div class="col-span-1 font-mono text-ink-soft">{{ r.teacher.id }}</div>
-        <div class="col-span-4 font-semibold text-forest-deep">
+    <div class="grid grid-cols-1 sm:grid-cols-12 gap-2 px-4 py-3 items-center border-t border-gray-100 text-sm">
+        <div class="sm:col-span-1 font-mono text-ink-soft">ID: {{ r.teacher.id }}</div>
+        <div class="sm:col-span-4 font-semibold text-forest-deep break-words">
             {{ r.teacher.name }}
             {% with class_list=r.teacher.get_class_list %}
             <div class="text-[11px] font-normal text-ink-soft">
@@ -50,10 +51,10 @@
             </div>
             {% endwith %}
         </div>
-        <div class="col-span-3 text-ink-soft">
+        <div class="sm:col-span-3 text-ink-soft break-words">
             {% if r.teacher.mobile %}{{ r.teacher.mobile }}{% else %}<span class="text-absent">—</span>{% endif %}
         </div>
-        <div class="col-span-4 flex gap-2 justify-center text-sm">
+        <div class="sm:col-span-4 flex gap-2 justify-start sm:justify-center flex-wrap text-sm">
             <span class="bg-green-50 text-present font-bold px-3 py-1 rounded-full">{{ r.present }} Present</span>
             <span class="bg-red-50 text-absent font-bold px-3 py-1 rounded-full">{{ r.absent }} Absent</span>
         </div>

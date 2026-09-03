@@ -17,7 +17,7 @@
 
 <div class="bg-white border border-gray-200 rounded-xl p-6 max-w-lg mx-auto shadow-sm">
     <div class="mb-4 px-3 py-2 rounded-lg text-sm font-semibold
-        {% if employment_type == 'full' %}bg-forest/10 text-forest{% else %}bg-gold/20 text-gold{% endif %}">
+        bg-forest/10 text-forest">
         Uploading into: {{ type_label }}
     </div>
 
@@ -50,7 +50,8 @@
     <form id="teacherUploadForm" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <input type="hidden" name="employment_type" value="{{ employment_type }}">
-        <input type="file" name="excel_file" accept=".xlsx" multiple required class="w-full text-sm mb-4 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-forest/10 file:text-forest hover:file:bg-forest/20 cursor-pointer">
+        <input type="file" name="excel_file" accept=".xlsx" multiple required
+            class="w-full text-sm mb-4 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-forest/10 file:text-forest hover:file:bg-forest/20 cursor-pointer">
         <button id="teacherSubmitBtn" type="submit"
             class="w-full bg-forest text-white font-bold py-3 rounded-lg hover:bg-forest-deep transition flex items-center justify-center gap-2">
             <span id="teacherBtnText">Upload &amp; Import as {{ type_label }}</span>
@@ -59,7 +60,7 @@
 </div>
 
 <script>
-    document.getElementById('teacherUploadForm').addEventListener('submit', function(e) {
+    document.getElementById('teacherUploadForm').addEventListener('submit', function (e) {
         const btn = document.getElementById('teacherSubmitBtn');
         const text = document.getElementById('teacherBtnText');
         btn.disabled = true;
