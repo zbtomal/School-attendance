@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from django.utils import timezone
 from django.core.paginator import Paginator
 from django.db import IntegrityError, transaction
+from concurrent.futures import ThreadPoolExecutor
 from django.conf import settings
 from .models import Teacher, Student, Attendance, TeacherAttendance
 from django.urls import reverse
@@ -19,6 +20,30 @@ from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
 # shown to the admin in student_upload.html / teacher_upload.html.
 STUDENT_EXCEL_HEADERS = ["Roll", "Name", "Class", "Section", "Session", "Phone"]
 TEACHER_EXCEL_HEADERS = ["Name", "Number", "Class"]
+
+
+def send_absent_sms(people, message_builder, date_str, number_getter):
+    """Send absence alerts concurrently so one slow SMS does not block every other alert."""
+    people_with_numbers = [person for person in people if number_getter(person)]
+    people_without_numbers = [f"{person.name} (no phone)" for person in people if not number_getter(person)]
+
+    def deliver(person):
+        message = message_builder(person.name, date_str)
+        success, response = send_sms(number_getter(person), message)
+        return person.name if success else None
+
+    if not people_with_numbers:
+        return 0, people_without_numbers
+
+    worker_count = min(8, len(people_with_numbers))
+    with ThreadPoolExecutor(max_workers=worker_count) as executor:
+        results = list(executor.map(deliver, people_with_numbers))
+
+    sent_count = sum(1 for result in results if result)
+    failed = people_without_numbers + [
+        person.name for person, result in zip(people_with_numbers, results) if not result
+    ]
+    return sent_count, failed
 
 
 def is_admin(user):
@@ -223,7 +248,7 @@ def mark_attendance(request):
             ).exists()
 
         if not already_marked:
-            sms_failed = []
+            absent_students = []
             for student in students:
                 status = request.POST.get(f'att_{student.id}', 'present')
                 is_present = status == 'present'
@@ -235,15 +260,14 @@ def mark_attendance(request):
                 )
 
                 if not is_present:
-                    if student.parent_mobile:
-                        message = build_absent_message(student, date_str)
-                        success, resp = send_sms(student.parent_mobile, message)
-                        if success:
-                            sms_sent_count += 1
-                        else:
-                            sms_failed.append(student.name)
-                    else:
-                        sms_failed.append(f"{student.name} (no phone)")
+                    absent_students.append(student)
+
+            sms_sent_count, sms_failed = send_absent_sms(
+                absent_students,
+                build_absent_message,
+                date_str,
+                lambda student: student.parent_mobile,
+            )
 
             saved = True
             already_marked = True
@@ -846,7 +870,7 @@ def mark_teacher_attendance(request):
 
         if employment_type:
             section_teachers = Teacher.objects.filter(employment_type=employment_type).order_by('id')
-            sms_failed = []
+            absent_teachers = []
             for teacher in section_teachers:
                 status = request.POST.get(f'tatt_{teacher.id}', 'present')
                 is_present = status == 'present'
@@ -858,15 +882,14 @@ def mark_teacher_attendance(request):
                 )
 
                 if not is_present:
-                    if teacher.mobile:
-                        message = build_teacher_absent_message(teacher.name, date_str)
-                        success, resp = send_sms(teacher.mobile, message)
-                        if success:
-                            sms_sent_count += 1
-                        else:
-                            sms_failed.append(teacher.name)
-                    else:
-                        sms_failed.append(f"{teacher.name} (no phone)")
+                    absent_teachers.append(teacher)
+
+            sms_sent_count, sms_failed = send_absent_sms(
+                absent_teachers,
+                build_teacher_absent_message,
+                date_str,
+                lambda teacher: teacher.mobile,
+            )
 
             saved = True
             saved_type = section
