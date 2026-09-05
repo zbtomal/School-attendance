@@ -600,6 +600,7 @@ def teacher_list(request):
     return render(request, 'attendance/teacher_list.html', {
         'full_time_teachers': full_time,
         'part_time_teachers': part_time,
+        'full_time_count': full_time.count(),
     })
 
 

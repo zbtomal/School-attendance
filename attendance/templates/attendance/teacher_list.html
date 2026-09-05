@@ -110,8 +110,8 @@
     {% for teacher in part_time_teachers %}
     <div
         class="grid grid-cols-1 sm:grid-cols-12 gap-2 px-4 py-3.5 items-center border-t border-gray-100 text-sm hover:bg-paper/60 transition">
-        <div class="sm:col-span-1 font-mono text-ink-soft font-semibold">#{{
-            full_time_teachers|length|add:forloop.counter }}</div>
+        <div class="sm:col-span-1 font-mono text-ink-soft font-semibold">#{{ forloop.counter|add:full_time_count }}
+        </div>
         <div class="sm:col-span-5 break-words">
             <div class="font-semibold text-forest-deep">{{ teacher.name }}</div>
             <div class="mt-1 flex flex-wrap gap-1">
